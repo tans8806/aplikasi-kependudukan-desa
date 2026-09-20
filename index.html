@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Sistem Administrasi Kependudukan Desa
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+
+      <div class="logo-icon">
+        🏛️
+      </div>
+
+      <div>
+
+        <strong>
+          SIDESA
+        </strong>
+
+        <small>
+          Administrasi Desa
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <nav>
+
+      <button
+        class="menu active"
+        data-page="dashboard"
+      >
+        🏠
+        <span>Dashboard</span>
+      </button>
+
+
+      <button
+        class="menu"
+        data-page="penduduk"
+      >
+        👥
+        <span>Data Penduduk</span>
+      </button>
+
+
+      <button
+        class="menu"
+        data-page="registrasi"
+      >
+        ➕
+        <span>Registrasi Penduduk</span>
+      </button>
+
+
+      <button
+        class="menu"
+        data-page="keluarga"
+      >
+        🏠
+        <span>Data Keluarga</span>
+      </button>
+
+    </nav>
+
+
+    <div class="sidebar-footer">
+
+      <small>
+        Sistem Administrasi Desa
+      </small>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+      <div>
+
+        <h1 id="pageTitle">
+          Dashboard
+        </h1>
+
+        <p>
+          Sistem Administrasi Kependudukan
+        </p>
+
+      </div>
+
+
+      <div class="status">
+
+        <span
+          id="apiStatus"
+          class="status-dot"
+        ></span>
+
+        <span id="apiStatusText">
+          Menghubungkan...
+        </span>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- DASHBOARD -->
+
+    <section
+      id="page-dashboard"
+      class="page active"
+    >
+
+      <div class="welcome">
+
+        <h2>
+          Selamat Datang
+        </h2>
+
+        <p>
+          Sistem Administrasi Kependudukan Desa
+        </p>
+
+      </div>
+
+
+      <div class="cards">
+
+
+        <div class="card">
+
+          <div class="card-icon">
+            👥
+          </div>
+
+          <div>
+
+            <span>
+              Total Penduduk
+            </span>
+
+            <strong id="totalPenduduk">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-icon">
+            👨
+          </div>
+
+          <div>
+
+            <span>
+              Laki-laki
+            </span>
+
+            <strong id="totalLaki">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-icon">
+            👩
+          </div>
+
+          <div>
+
+            <span>
+              Perempuan
+            </span>
+
+            <strong id="totalPerempuan">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-icon">
+            🏠
+          </div>
+
+          <div>
+
+            <span>
+              Jumlah KK
+            </span>
+
+            <strong id="totalKK">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+      <div class="panel">
+
+        <h3>
+          Informasi Sistem
+        </h3>
+
+        <p>
+          Data kependudukan tersimpan pada
+          Google Spreadsheet dan dikelola melalui
+          Google Apps Script API.
+        </p>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- DATA PENDUDUK -->
+
+    <section
+      id="page-penduduk"
+      class="page"
+    >
+
+      <div class="panel">
+
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Data Penduduk
+            </h2>
+
+            <p>
+              Daftar seluruh penduduk
+            </p>
+
+          </div>
+
+
+          <button
+            class="btn-primary"
+            onclick="showPage('registrasi')"
+          >
+            + Tambah Penduduk
+          </button>
+
+        </div>
+
+
+        <div class="search">
+
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cari NIK, No. KK, atau nama..."
+          >
+
+          <button
+            onclick="loadPenduduk()"
+          >
+            Cari
+          </button>
+
+        </div>
+
+
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>No</th>
+                <th>NIK</th>
+                <th>No. KK</th>
+                <th>Nama Lengkap</th>
+                <th>L/P</th>
+                <th>Tgl Lahir</th>
+                <th>Umur</th>
+                <th>Hubungan Keluarga</th>
+                <th>Aksi</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="pendudukTable">
+
+              <tr>
+
+                <td
+                  colspan="9"
+                  class="loading"
+                >
+                  Memuat data...
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- REGISTRASI -->
+
+    <section
+      id="page-registrasi"
+      class="page"
+    >
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Registrasi Penduduk
+            </h2>
+
+            <p>
+              Tambahkan data penduduk baru
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <form
+          id="pendudukForm"
+        >
+
+
+          <div class="form-grid">
+
+
+            <div class="form-group">
+
+              <label>
+                No. KK *
+              </label>
+
+              <input
+                type="text"
+                id="noKK"
+                maxlength="16"
+                inputmode="numeric"
+                required
+              >
+
+              <small>
+                Harus tepat 16 digit
+              </small>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                NIK *
+              </label>
+
+              <input
+                type="text"
+                id="nik"
+                maxlength="16"
+                inputmode="numeric"
+                required
+              >
+
+              <small>
+                Harus tepat 16 digit dan tidak boleh ganda
+              </small>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Nama Lengkap *
+              </label>
+
+              <input
+                type="text"
+                id="namaLengkap"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Jenis Kelamin *
+              </label>
+
+              <select
+                id="jenisKelamin"
+                required
+              >
+
+                <option value="">
+                  Pilih
+                </option>
+
+                <option value="Laki-laki">
+                  Laki-laki
+                </option>
+
+                <option value="Perempuan">
+                  Perempuan
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Tempat Lahir
+              </label>
+
+              <input
+                type="text"
+                id="tempatLahir"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Tanggal Lahir *
+              </label>
+
+              <input
+                type="date"
+                id="tanggalLahir"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Agama
+              </label>
+
+              <select id="agama">
+
+                <option value="">
+                  Pilih
+                </option>
+
+                <option>
+                  Islam
+                </option>
+
+                <option>
+                  Kristen
+                </option>
+
+                <option>
+                  Katolik
+                </option>
+
+                <option>
+                  Hindu
+                </option>
+
+                <option>
+                  Buddha
+                </option>
+
+                <option>
+                  Konghucu
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Pendidikan
+              </label>
+
+              <input
+                type="text"
+                id="pendidikan"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Jenis Pekerjaan
+              </label>
+
+              <input
+                type="text"
+                id="jenisPekerjaan"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Status Perkawinan
+              </label>
+
+              <select id="statusPerkawinan">
+
+                <option value="">
+                  Pilih
+                </option>
+
+                <option>
+                  Belum Kawin
+                </option>
+
+                <option>
+                  Kawin
+                </option>
+
+                <option>
+                  Cerai Hidup
+                </option>
+
+                <option>
+                  Cerai Mati
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Status Hubungan Dalam Keluarga
+              </label>
+
+              <select id="statusHubunganKeluarga">
+
+                <option value="">
+                  Pilih
+                </option>
+
+                <option>
+                  Kepala Keluarga
+                </option>
+
+                <option>
+                  Istri
+                </option>
+
+                <option>
+                  Anak
+                </option>
+
+                <option>
+                  Orang Tua
+                </option>
+
+                <option>
+                  Famili Lain
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Kewarganegaraan
+              </label>
+
+              <input
+                type="text"
+                id="kewarganegaraan"
+                value="WNI"
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Alamat
+              </label>
+
+              <textarea
+                id="alamat"
+                rows="3"
+              ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                RT
+              </label>
+
+              <input
+                type="text"
+                id="rt"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                RW
+              </label>
+
+              <input
+                type="text"
+                id="rw"
+              >
+
+            </div>
+
+
+          </div>
+
+
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="btn-secondary"
+              onclick="showPage('penduduk')"
+            >
+              Batal
+            </button>
+
+
+            <button
+              type="submit"
+              class="btn-primary"
+            >
+              Simpan Penduduk
+            </button>
+
+          </div>
+
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- KELUARGA -->
+
+    <section
+      id="page-keluarga"
+      class="page"
+    >
+
+      <div class="panel">
+
+        <h2>
+          Data Keluarga
+        </h2>
+
+        <p>
+          Fitur pengelompokan anggota keluarga
+          berdasarkan No. KK akan kita aktifkan
+          pada tahap berikutnya.
+        </p>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+  <script src="app.js"></script>
+
+</body>
+
+</html>
